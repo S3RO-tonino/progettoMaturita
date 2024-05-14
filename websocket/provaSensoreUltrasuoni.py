@@ -12,7 +12,7 @@ GPIO.setup(ECHO, GPIO.IN)
 GPIO.output(TRIG, False) # accendo il sensore
 time.sleep(2)
 
-def leggiDati():
+while True:
     try:
         GPIO.output(TRIG, True)
         time.sleep(0.5) # invio del segnale
@@ -32,6 +32,7 @@ def leggiDati():
         else: ele = "Nessun rilevamento"
     except Exception as e: ele = (f"Errore durante la lettura: {e}")
     print(ele)
-    return ele
+time.sleep(2)
+
 
 
