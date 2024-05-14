@@ -1,0 +1,51 @@
+body {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    box-sizing: border-box; /* Specifica il tipo di 'scatola', in questo caso nella dimensione totale sarà contenuto il valore di padding e margin */
+}
+
+header, footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+header a{
+    color: #54aff5;
+    text-decoration: none;
+}
+
+header a:hover{
+    color: #3191db;
+    text-decoration: underline;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.section {
+    flex: 0 1 30%; /* Distribuzione equa su tre colonne */
+    background-color: #f2f2f2;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+@media screen and (max-width: 768px) {
+    .section {
+        flex: 0 1 45%; /* Div su due colonne e uno sotto */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .section {
+        flex: 0 1 100%; /* Se lo schermo ha una dimensione di massimo 480px mette tutti i div in una sola colonna */
+    }
+}
