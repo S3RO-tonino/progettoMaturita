@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualizzazione dati in tempo reale</title>
+    <script>
+        var websocket = new WebSocket("ws://localhost:8765/");
+
+        websocket.onmessage = function(event) {
+            var data = event.data;
+            // Aggiorna i dati nella tua pagina HTML
+            document.getElementById("sensor-data").innerText = data;
+        };
+    </script>
+</head>
+<body>
+    <h1>Dati dei sensori in tempo reale</h1>
+    <div id="sensor-data">In attesa dei dati...</div>
+</body>
+</html>
+
