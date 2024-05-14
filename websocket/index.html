@@ -3,7 +3,7 @@
 <head>
     <title>Visualizzazione dati in tempo reale</title>
     <script>
-        var websocket = new WebSocket("ws://localhost:8765/");
+        var websocket = new WebSocket("ws://192.168.1.155:8765/");
 
         websocket.onmessage = function(event) {
             var data = event.data;
