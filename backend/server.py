@@ -1,12 +1,12 @@
 import asyncio
 import websockets
 import json
-from sensoreUltrasuoni import leggiDati as datiSU
+from sensoreUltrasuoni import leggiDati as leggiDatiSU
 
 async def server(websocket, path):
     while True:
         # Legge i dati del sensore ultrasuoni
-        datiSU = leggiSU()
+        datiSU = leggiDatiSU()
 
         # Invia i dati al client tramite WebSocket se sono diversi da ND (no data)
         if datiSU["data"] != "ND":

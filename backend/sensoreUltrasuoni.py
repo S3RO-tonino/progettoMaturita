@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+from datetime import datetime
 
 GPIO.setmode(GPIO.BCM)
 
@@ -31,9 +32,8 @@ def leggiDati():
         distance = pulse_duration * 17150
         distance = round(distance, 2)
         #riduco la distanza massima di rilevamento a 25cm
-        if distance <= 25: ele = f"Rilevato qualcosa: {distance}CM"
+        if distance <= 25: ele = f"Rilevato qualcosa {datetime.now().strftime('%H:%M:%S')}."
         else: ele = "ND"
     except Exception as e: ele = (f"Errore durante la lettura: {e}")
-    eleDict = {"sensorID": {ID}, "data": {ele}}
-    print eleDict
+    eleDict = {"sensorID": f'{ID}', "data": f'{ele}'}
     return eleDict
