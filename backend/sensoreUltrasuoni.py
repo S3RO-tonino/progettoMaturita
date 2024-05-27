@@ -32,8 +32,15 @@ def leggiDati():
         distance = pulse_duration * 17150
         distance = round(distance, 2)
         #riduco la distanza massima di rilevamento a 25cm
+<<<<<<< HEAD
+        if distance <= 25: ele = f"Rilevato qualcosa"
+        else: ele = "ND"
+    except Exception as e: ele = (f"Errore durante la lettura: {e}")
+    eleDict = {"sensorID": f'{ID}', "data": f'{ele}', "time": f"{datetime.now().strftime('%H:%M:%S')}"}
+=======
         if distance <= 25: ele = f"Rilevato qualcosa {datetime.now().strftime('%H:%M:%S')}."
         else: ele = "ND"
     except Exception as e: ele = (f"Errore durante la lettura: {e}")
     eleDict = {"sensorID": f'{ID}', "data": f'{ele}'}
+>>>>>>> d5330f74f009581301ffceab902dc48b95c473dc
     return eleDict
