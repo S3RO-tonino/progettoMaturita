@@ -4,27 +4,24 @@ from datetime import datetime
 
 GPIO.setmode(GPIO.BCM)
 
-TRIG = 23
-ECHO = 24
+GPIO.setup(23, GPIO.OUT) #trig
+GPIO.setup(24, GPIO.IN) #echo
 
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
-
-GPIO.output(TRIG, False) # accendo il sensore
+GPIO.output(23, False) # accendo il sensore
 time.sleep(2)
 
 def leggiDati():
     try:
         #ID = "USensor"
         eleDict = {}
-        GPIO.output(TRIG, True)
+        GPIO.output(23, True)
         time.sleep(0.5) # invio del segnale
-        GPIO.output(TRIG, False)
+        GPIO.output(23, False)
 
-        while(GPIO.input(ECHO) == 0):
+        while(GPIO.input(24) == 0):
             pulse_start = time.time()
 
-        while(GPIO.input(ECHO) == 1):
+        while(GPIO.input(24) == 1):
             pulse_end = time.time()
 
         pulse_duration = pulse_end - pulse_start
@@ -32,12 +29,8 @@ def leggiDati():
         distance = pulse_duration * 17150
         distance = round(distance, 2)
         #riduco la distanza massima di rilevamento a 25cm
-        if distance <= 25:
-            ele = f"Intrusione rilevata: {distance}cm"
-            isIntrusion = True
-        else:
-            ele = "ND"
-            isIntrusion = False
+        if distance <= 25: isIntrusion = True
+        else: isIntrusion = False
     except Exception as e: ele = (f"Errore durante la lettura: {e}")
-    eleDict = {"ID": 'USensor', "name": 'Sensore di movimento', "intrusion": {isIntrusion} , "data": f'{ele}', "time": f"{datetime.now().strftime('%H:%M:%S')}"}
+    eleDict = {"ID": 'USensor', "name": 'Sensore di movimento', "intrusion": {isIntrusion}, "data": f'{ele}', "time": f"{datetime.now().strftime('%H:%M:%S')}"}
     return eleDict
