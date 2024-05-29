@@ -46,7 +46,7 @@ main {
 
 @media screen and (max-width: 480px) {
     .section {
-        flex: 0 1 100%; /* Se lo schermo ha una dimensione di massimo 480px mette tutti i div in una sola colonna */
+        flex: 0 1 100%;
     }
 }
 
@@ -101,7 +101,6 @@ input:checked + .slider:before {
 transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
 border-radius: 34px;
 }

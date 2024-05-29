@@ -9,10 +9,11 @@ async def server(websocket, path):
     try:
         def differenza(i, f):
             diff = int(f.replace(":",""))-int(i.replace(":",""))
-            print(f"Differenza: {diff}")
+            #print(f"Differenza: {diff}")
             return diff
         print("Connessione con il client eseguita")
-        await websocket.send(json.dumps({"sensorID": 'clientConnected', "data": 'Nessuna intrusione', "time": f"{datetime.now().strftime('%H:%M:%S')}"}))
+        await websocket.send(json.dumps(leggiDatiSU()))
+        #await websocket.send(json.dumps({"sensorID": 'clientConnected', "data": 'Nessuna intrusione', "time": f"{datetime.now().strftime('%H:%M:%S')}"}))
         oldDatiSU = leggiDatiSU()
 
         while True:
@@ -20,7 +21,7 @@ async def server(websocket, path):
             datiSU = leggiDatiSU()
 
             # Invia i dati al client tramite WebSocket se sono diversi da ND (no data)
-            if(differenza(datiSU["time"], oldDatiSU["time"]) >=5 or datiSU["data"] != "ND"):
+            if(differenza(oldDatiSU["time"], datiSU["time"]) >=5 or datiSU["data"] != "ND"):
                 await websocket.send(json.dumps(datiSU))
                 oldDatiSU = datiSU
             await asyncio.sleep(1)  # Aggiorna i dati ogni secondo

@@ -15,7 +15,7 @@ time.sleep(2)
 
 def leggiDati():
     try:
-        ID = "USensor"
+        #ID = "USensor"
         eleDict = {}
         GPIO.output(TRIG, True)
         time.sleep(0.5) # invio del segnale
@@ -32,8 +32,12 @@ def leggiDati():
         distance = pulse_duration * 17150
         distance = round(distance, 2)
         #riduco la distanza massima di rilevamento a 25cm
-        if distance <= 25: ele = f"Rilevato qualcosa"
-        else: ele = "ND"
+        if distance <= 25:
+            ele = f"Intrusione rilevata: {distance}cm"
+            isIntrusion = True
+        else:
+            ele = "ND"
+            isIntrusion = False
     except Exception as e: ele = (f"Errore durante la lettura: {e}")
-    eleDict = {"sensorID": f'{ID}', "data": f'{ele}', "time": f"{datetime.now().strftime('%H:%M:%S')}"}
+    eleDict = {"ID": 'USensor', "name": 'Sensore di movimento', "intrusion": {isIntrusion} , "data": f'{ele}', "time": f"{datetime.now().strftime('%H:%M:%S')}"}
     return eleDict

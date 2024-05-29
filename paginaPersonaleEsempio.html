@@ -2,31 +2,34 @@
 <html lang="it">
     <head>
         <script>
-            document.getElementsByClassName("sensorData").innerText = "Nessuna informazione";
+            document.getElementsByClassName("sensorData").innerText = "Nessuna informazione.";
             try {
                 var ws = new WebSocket("ws://192.168.1.155:8765/");
                 ws.onmessage = function(event) {
                 try {
                     var data = JSON.parse(event.data);
-                    var sensorID = data.sensorID;
-                    var sensorData = data.data;
+                    if(data.intrusion == true){
+                        var sensorID = data.ID;
+                        var sensorName = data.name;
+                        var sensorData = data.data;
+                        var sensorTime = data.time;
+                    }
+                    else{
+                    	var sensorData = "Nessuna intrusione rilevata.";
+                        var sensorTime = data.time;
+                    };
 
                     // Aggiorna i dati nella tua pagina HTML in base all'identificatore del sensore
-                    var displayElement = document.getElementById(sensorID + "Data");
-                    if (!displayElement) {
-                        displayElement = document.createElement("div");
-                        displayElement.id = sensorID+"Data";
-                        document.body.appendChild(displayElement);
-                    }
-                    displayElement.innerText = "Sensor " + sensorID + ": " + sensorData;
+                    var displayElement = document.getElementById("SensorData");
+                    displayElement.innerText = sensorData + " " + sensorTime ;
                 } catch (e) {
                     console.error("Errore nel parsing dei dati JSON: ", e);
                 }
                 };
 
                 ws.onerror = function(event) {
-                console.error("Errore durante la connessione al WS: ", event);
-                document.getElementsByClassName("sensorData").innerText = "Nessuna connessione.";
+                    console.error("Errore durante la connessione al WS: ", event);
+                    document.getElementsByClassName("sensorData").innerText = "Nessuna connessione.";
                 };
 
                 ws.onclose = function(event) {
@@ -88,9 +91,9 @@
             </label>
         </div>
 
-        <div class="section" id="USensorDataDiv">
+        <div class="section" id="SensorDataDiv">
             <h2> Sensore di movimento </h2>
-            <p class="sensorData" id="USensorData"> ND  </p>
+            <p class="sensorData" id="SensorData"> </p>
         </div>
 
         <div class="section">
