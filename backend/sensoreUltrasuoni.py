@@ -33,5 +33,5 @@ def leggiDati():
         else: isIntrusion = False
         mex = ""
     except Exception as e: mex = (f"Errore durante la lettura: {e}")
-    data = {"ID": 'USensor', "name": 'Sensore di movimento', "intrusion": f'{isIntrusion}', "mex": f'{mex}'}
+    data = {"ID": 'USensor', "name": 'Sensore di movimento', "intrusion": isIntrusion, "mex": f'{mex}'}
     return data

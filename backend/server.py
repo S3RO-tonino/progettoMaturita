@@ -26,10 +26,10 @@ async def server(websocket, path):
             return datetime.now().strftime('%H:%M:%S')
 
         print("Connessione con il client eseguita")
-        status = readJson()["status"]
-        print(f"[DEBUG] STATUS: {status}, type: {type(status)}")
+        status = bool(readJson()["status"])
+        #print(f"[DEBUG] STATUS: {status}, type: {type(status)}")
         startMessage = {"ID": 'start', "allarmStatus": f'{status}'}
-        print(f"SENDING: {startMessage}")
+        #print(f"SENDING: {startMessage}")
         #print(f"allarm: {allarm}, type: {type(allarm)}")
         await websocket.send(json.dumps(startMessage))
         #await websocket.send(json.dumps({"sensorID": 'clientConnected', "data": 'Nessuna intrusione', "time": f"{datetime.now().strftime('%H:%M:%S')}"}))
@@ -43,19 +43,20 @@ async def server(websocket, path):
 
             # Invia i dati al client tramite WebSocket se sono diversi da ND (no data)
             if(status):
+                #print(f"DEBUG {datiSM['intrusion']}, {type(datiSM['intrusion'])}")
                 if(datiSU['intrusion']==True or datiSM['intrusion']==True):
-                    print("DEBUG INTRUSIONE")
+                    #print("DEBUG INTRUSIONE")
                     if(datiSU['intrusion']==True):
                         await websocket.send(json.dumps(datiSU))
-                        print("DEBUG SU")
+                        #print("DEBUG SU")
                     if(datiSM['intrusion']==True):
                         await websocket.send(json.dumps(datiSM))
-                        print("DEBUG SM")
+                        #print("DEBUG SM")
                     end = timeNow()
                 elif(differenza(end, start)>=5):
                     await websocket.send(json.dumps({"ID": 'noIntrusion'}))
-                    print("DEBUG NO INTRUSIONE")
-                print(f"[DEBUG] - DIFFERENZA: {differenza(end, start)} - INIZIO FINE: {start} {end} - SU: {datiSU['intrusion']} - SM:{datiSM['intrusion']} - STATUS {status}")
+                    #print("DEBUG NO INTRUSIONE")
+                #print(f"[DEBUG] - DIFFERENZA: {differenza(end, start)} - INIZIO FINE: {start} {end} - SU: {datiSU['intrusion']} - SM:{datiSM['intrusion']} - STATUS {status}")
             await asyncio.sleep(1)  # Aggiorna i dati ogni secondo
     except Exception as e: print(f"Errore: {e}")
 

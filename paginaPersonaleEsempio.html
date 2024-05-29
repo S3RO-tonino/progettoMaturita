@@ -9,12 +9,13 @@
                 try {
                     var data = JSON.parse(event.data);
                     console.log(data);
+
 		    if(data.ID == "start"){
                     	document.getElementById("allarmStatusText").innerText = data.status;
 		    }
                     if(data.ID != "start" && data.ID != "noIntrusion" && data.intrusion == true){
                         var sensorName = data.name;
-                        var activeSensorsElement = document.getElementById("sensorDataP");
+                        var activeSensorsElement = document.getElementById("sensorData");
 
                         if (activeSensorsElement.innerText === "ND") {
                             activeSensorsElement.innerText = "";
@@ -26,7 +27,7 @@
                     }
 
                     if(data.ID == "noIntrusion"){
-                    	document.getElementById("sensorDataP").innerText = "Nessuna intrusione rilevata.";
+                    	document.getElementById("sensorData").innerText = "Nessuna intrusione rilevata.";
                     };
                 } catch (e) {
                     console.error("Errore nel parsing dei dati JSON: ", e);

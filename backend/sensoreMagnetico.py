@@ -13,5 +13,5 @@ def leggiDati():
         mex = ""
     except Exception as e: mex=(f"errore: {e}")
 
-    data = {"ID": 'MSensor', "name": 'Sensore magnetico', "intrusion": f'{isIntrusion}', "mex": f'{mex}'}
+    data = {"ID": 'MSensor', "name": 'Sensore magnetico', "intrusion": isIntrusion, "mex": f'{mex}'}
     return data
