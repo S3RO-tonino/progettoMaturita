@@ -44,7 +44,7 @@ async def server(websocket, path):
             if(status):
                 toSend = {}
                 if(datiSU['intrusion']==True or datiSM['intrusion']==True):
-                    if datiSU['intrusion']==True: toSend.append(datiSU['name'])Ã
+                    if datiSU['intrusion']==True: toSend.append(datiSU['name'])
                     if datiSM['intrusion']==True: toSend.append(datiSM['name'])
                 if(differenza(end, start)>=5):
                     toSend.append("noIntrusion")
