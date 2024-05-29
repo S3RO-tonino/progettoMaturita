@@ -57,6 +57,15 @@ async def server(websocket, path):
                     await websocket.send(json.dumps({"ID": 'noIntrusion'}))
                     #print("DEBUG NO INTRUSIONE")
                 #print(f"[DEBUG] - DIFFERENZA: {differenza(end, start)} - INIZIO FINE: {start} {end} - SU: {datiSU['intrusion']} - SM:{datiSM['intrusion']} - STATUS {status}")
+                    if datiSU['intrusion']==True: toSend.append(datiSU['name'])
+                    if datiSM['intrusion']==True: toSend.append(datiSM['name'])
+                if(differenza(end, start)>=5):
+                    toSend.append("noIntrusion")
+                print(f"[DEBUG] - DIFFERENZA: {differenza(end, start)} - INIZIO FINE: {start} {end} - SU: {datiSU['intrusion']} - SM:{datiSM['intrusion']} - STATUS {status}")
+                await websocket.send(json.dumps(toSend))
+                end = timeNow()
+                #print(f"SENDING: {datiSU}")
+                #print(f"SENDING: {datiSM}")
             await asyncio.sleep(1)  # Aggiorna i dati ogni secondo
     except Exception as e: print(f"Errore: {e}")
 
