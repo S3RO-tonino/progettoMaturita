@@ -13,7 +13,7 @@ time.sleep(2)
 def leggiDati():
     try:
         #ID = "USensor"
-        eleDict = {}
+        data = {}
         GPIO.output(23, True)
         time.sleep(0.5) # invio del segnale
         GPIO.output(23, False)
@@ -31,6 +31,7 @@ def leggiDati():
         #riduco la distanza massima di rilevamento a 25cm
         if distance <= 25: isIntrusion = True
         else: isIntrusion = False
-    except Exception as e: ele = (f"Errore durante la lettura: {e}")
-    eleDict = {"ID": 'USensor', "name": 'Sensore di movimento', "intrusion": {isIntrusion}, "data": f'{ele}', "time": f"{datetime.now().strftime('%H:%M:%S')}"}
-    return eleDict
+        mex = ""
+    except Exception as e: mex = (f"Errore durante la lettura: {e}")
+    data = {"ID": 'USensor', "name": 'Sensore di movimento', "intrusion": f'{isIntrusion}', "mex": f'{mex}'}
+    return data

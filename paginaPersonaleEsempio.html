@@ -8,7 +8,10 @@
                 ws.onmessage = function(event) {
                 try {
                     var data = JSON.parse(event.data);
-                    if(data.intrusion == true){
+		    if(data.ID == "start"){
+                    	document.getElementById("allarmStatusText").innerText = data.status;
+		    }
+                    else if(data.ID != "start"){
                         var sensorID = data.ID;
                         var sensorName = data.name;
                         var sensorData = data.data;
@@ -20,8 +23,8 @@
                     };
 
                     // Aggiorna i dati nella tua pagina HTML in base all'identificatore del sensore
-                    var displayElement = document.getElementById("SensorData");
-                    displayElement.innerText = sensorData + " " + sensorTime ;
+                    var displayElement = document.getElementById("sensorData");
+                    displayElement.innerText = "Intrusione rilevata in " + sensorName;
                 } catch (e) {
                     console.error("Errore nel parsing dei dati JSON: ", e);
                 }
@@ -93,7 +96,7 @@
 
         <div class="section" id="SensorDataDiv">
             <h2> Sensore di movimento </h2>
-            <p class="sensorData" id="SensorData"> </p>
+            <p class="sensorData" id="sensorData"> </p>
         </div>
 
         <div class="section">

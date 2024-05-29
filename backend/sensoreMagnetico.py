@@ -7,11 +7,11 @@ gp.setup(17, gp.IN)
 
 def leggiDati():
     try:
-        eleDict = {}
+        data = {}
         if gp.input(17): isIntrusion = True
         else: isIntrusion = False
-        ele = ""
-    except Exception as e: ele=(f"errore: {e}")
+        mex = ""
+    except Exception as e: mex=(f"errore: {e}")
 
-    eleDict = {"ID": 'MSensor', "name": 'Sensore magnetico', "intrusion": {isIntrusion}, "data": f'{ele}', "time": f"{datetime.now().strftime('%H:%M:%S')}"}
-    return eleDict
+    data = {"ID": 'MSensor', "name": 'Sensore magnetico', "intrusion": f'{isIntrusion}', "mex": f'{mex}'}
+    return data
