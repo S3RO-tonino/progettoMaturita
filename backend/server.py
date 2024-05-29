@@ -3,6 +3,7 @@ import websockets
 import json
 from datetime import datetime
 from sensoreUltrasuoni import leggiDati as leggiDatiSU
+from sensoreMagnetico import leggiDati as leggiDatiSM
 
 print("Avviando il server...")
 async def server(websocket, path):
@@ -19,6 +20,7 @@ async def server(websocket, path):
         while True:
             # Legge i dati del sensore ultrasuoni
             datiSU = leggiDatiSU()
+            datiSM = leggiDatiSM()
 
             # Invia i dati al client tramite WebSocket se sono diversi da ND (no data)
             if(differenza(oldDatiSU["time"], datiSU["time"]) >=5 or datiSU["data"] != "ND"):
