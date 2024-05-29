@@ -2,37 +2,41 @@
 <html lang="it">
     <head>
         <script>
-            document.getElementsByClassName("sensorData").innerText = "Nessuna informazione.";
             try {
                 var ws = new WebSocket("ws://192.168.1.155:8765/");
                 ws.onmessage = function(event) {
+                // indent from here
                 try {
                     var data = JSON.parse(event.data);
+                    console.log(data);
 		    if(data.ID == "start"){
                     	document.getElementById("allarmStatusText").innerText = data.status;
 		    }
-                    else if(data.ID != "start"){
-                        var sensorID = data.ID;
+                    if(data.ID != "start" && data.ID != "noIntrusion" && data.intrusion == true){
                         var sensorName = data.name;
-                        var sensorData = data.data;
-                        var sensorTime = data.time;
-                    }
-                    else{
-                    	var sensorData = "Nessuna intrusione rilevata.";
-                        var sensorTime = data.time;
-                    };
+                        var activeSensorsElement = document.getElementById("sensorDataP");
 
-                    // Aggiorna i dati nella tua pagina HTML in base all'identificatore del sensore
-                    var displayElement = document.getElementById("sensorData");
-                    displayElement.innerText = "Intrusione rilevata in " + sensorName;
+                        if (activeSensorsElement.innerText === "ND") {
+                            activeSensorsElement.innerText = "";
+                        }
+
+                        // Aggiungi il nome del sensore al paragrafo
+                        var newSensor = document.createTextNode(sensorName + " ");
+                        activeSensorsElement.appendChild(newSensor);
+                    }
+
+                    if(data.ID == "noIntrusion"){
+                    	document.getElementById("sensorDataP").innerText = "Nessuna intrusione rilevata.";
+                    };
                 } catch (e) {
                     console.error("Errore nel parsing dei dati JSON: ", e);
                 }
+                // indent to here
                 };
 
                 ws.onerror = function(event) {
                     console.error("Errore durante la connessione al WS: ", event);
-                    document.getElementsByClassName("sensorData").innerText = "Nessuna connessione.";
+                    document.getElementById("sensorDataP").innerText = "Nessuna connessione.";
                 };
 
                 ws.onclose = function(event) {
@@ -42,20 +46,6 @@
             } catch (e) {
                 console.error("Errore nella connessione al WS: ", e);
             };
-
-//          ws.onmessage = function(event) {
-//              var data = JSON.parse(event.data);
-//              var sensorID = data.sensorID;
-//              var sensorData = data.data;
-
-              // aggiorna i dati del sensore ricevuto, identificato da sensorID
-//              if (sensorID == "sensoreUltrasuoni") {
-//                  document.getElementById("sensoreUltrasuoni").innerText = sensorData;
-//              } else if (sensorID == "sensor2") {
-//                  document.getElementById("sensor22222Data").innerText = sensorData;
-//              }
-//          };
-
 
             function allarmButton() {
                 if (document.getElementById("allarmSwitch").checked){
@@ -95,8 +85,8 @@
         </div>
 
         <div class="section" id="SensorDataDiv">
-            <h2> Sensore di movimento </h2>
-            <p class="sensorData" id="sensorData"> </p>
+            <h2> Situazione </h2>
+            <p class="sensorDataP" id="sensorData"> </p>
         </div>
 
         <div class="section">

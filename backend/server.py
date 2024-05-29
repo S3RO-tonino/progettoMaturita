@@ -19,7 +19,7 @@ async def server(websocket, path):
 
         def differenza(i, f):
             diff = int(f.replace(":",""))-int(i.replace(":",""))
-            print(f"Differenza: {diff}")
+            #print(f"Differenza: {diff}")
             return diff
 
         def timeNow():
@@ -27,6 +27,7 @@ async def server(websocket, path):
 
         print("Connessione con il client eseguita")
         status = readJson()["status"]
+        print(f"[DEBUG] STATUS: {status}, type: {type(status)}")
         startMessage = {"ID": 'start', "allarmStatus": f'{status}'}
         print(f"SENDING: {startMessage}")
         #print(f"allarm: {allarm}, type: {type(allarm)}")
@@ -42,17 +43,19 @@ async def server(websocket, path):
 
             # Invia i dati al client tramite WebSocket se sono diversi da ND (no data)
             if(status):
-                toSend = {}
                 if(datiSU['intrusion']==True or datiSM['intrusion']==True):
-                    if datiSU['intrusion']==True: toSend.append(datiSU['name'])Ã
-                    if datiSM['intrusion']==True: toSend.append(datiSM['name'])
-                if(differenza(end, start)>=5):
-                    toSend.append("noIntrusion")
+                    print("DEBUG INTRUSIONE")
+                    if(datiSU['intrusion']==True):
+                        await websocket.send(json.dumps(datiSU))
+                        print("DEBUG SU")
+                    if(datiSM['intrusion']==True):
+                        await websocket.send(json.dumps(datiSM))
+                        print("DEBUG SM")
+                    end = timeNow()
+                elif(differenza(end, start)>=5):
+                    await websocket.send(json.dumps({"ID": 'noIntrusion'}))
+                    print("DEBUG NO INTRUSIONE")
                 print(f"[DEBUG] - DIFFERENZA: {differenza(end, start)} - INIZIO FINE: {start} {end} - SU: {datiSU['intrusion']} - SM:{datiSM['intrusion']} - STATUS {status}")
-                await websocket.send(json.dumps(toSend))
-                end = timeNow()
-                #print(f"SENDING: {datiSU}")
-                #print(f"SENDING: {datiSM}")
             await asyncio.sleep(1)  # Aggiorna i dati ogni secondo
     except Exception as e: print(f"Errore: {e}")
 
