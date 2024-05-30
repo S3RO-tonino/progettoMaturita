@@ -3,7 +3,12 @@
     <head>
         <script>
             try {
-                var ws = new WebSocket("ws://192.168.1.155:8765/");
+                function WSConnection() {
+                    var ws = new WebSocket("ws://192.168.1.155:8765/");
+                    return ws;
+                };
+		//try per gestire errore connessione e spostare codice per riprovare a connettersi qui
+                ws = WSConnection();
                 ws.onmessage = function(event) {
                 // indent from here
                 try {
@@ -15,15 +20,18 @@
 		    }
                     if(data.ID != "start" && data.ID != "noIntrusion" && data.intrusion == true){
                         var sensorName = data.name;
-                        var activeSensorsElement = document.getElementById("sensorData");
+                        var sensorsData = document.getElementById("sensorData");
+                        //sensorData.innerText=("");
 
-                        if (activeSensorsElement.innerText === "ND") {
-                            activeSensorsElement.innerText = "";
+                        if (sensorsData.innerText === "ND" || sensorData.innerText === "Nessuna intrusione rilevata.") {
+                            sensorData.innerText=("");
                         }
-
-                        // Aggiungi il nome del sensore al paragrafo
-                        var newSensor = document.createTextNode(sensorName + " ");
-                        activeSensorsElement.appendChild(newSensor);
+			
+			if(!document.getElementById("sensorData").innerHTML.includes(sensorName)){
+                            var newSensor = document.createTextNode(sensorName);
+                            newSensor.innerText = sensorName + "";
+                            sensorsData.appendChild(newSensor);
+                        }
                     }
 
                     if(data.ID == "noIntrusion"){
@@ -36,8 +44,15 @@
                 };
 
                 ws.onerror = function(event) {
+                    function retryWSConnection() {
+                        console.log("Riprovando a connettersi al WS...");
+                        setInterval(WSConnection, 5000);
+		    }
+                    while(ws.onerror){retryWSConnection();}
+                    document.getElementById("sensorData").innerText = "Nessuna connessione, riprova.";
                     console.error("Errore durante la connessione al WS: ", event);
-                    document.getElementById("sensorDataP").innerText = "Nessuna connessione.";
+                    
+                    
                 };
 
                 ws.onclose = function(event) {
@@ -86,7 +101,7 @@
         </div>
 
         <div class="section" id="SensorDataDiv">
-            <h2> Situazione </h2>
+            <h2> Intrusioni </h2>
             <p class="sensorDataP" id="sensorData"> </p>
         </div>
 
