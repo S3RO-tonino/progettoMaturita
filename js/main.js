@@ -1,6 +1,6 @@
 
 function WSConnect() {
-    if(!ws.onerror){
+    if(!ws.onopen || ws == ""){
         var ws = new WebSocket("ws://192.168.1.155:8765/");
         return ws;
     }
