@@ -1,84 +1,14 @@
 <!DOCTYPE html>
 <html lang="it">
     <head>
-        <script>
-            try {
-                function WSConnection() {
-                    var ws = new WebSocket("ws://192.168.1.155:8765/");
-                    return ws;
-                };
-		//try per gestire errore connessione e spostare codice per riprovare a connettersi qui
-                ws = WSConnection();
-                ws.onmessage = function(event) {
-                // indent from here
-                try {
-                    var data = JSON.parse(event.data);
-                    console.log(data);
-
-		    if(data.ID == "start"){
-                    	document.getElementById("allarmStatusText").innerText = data.status;
-		    }
-                    if(data.ID != "start" && data.ID != "noIntrusion" && data.intrusion == true){
-                        var sensorName = data.name;
-                        var sensorsData = document.getElementById("sensorData");
-                        //sensorData.innerText=("");
-
-                        if (sensorsData.innerText === "ND" || sensorData.innerText === "Nessuna intrusione rilevata.") {
-                            sensorData.innerText=("");
-                        }
-			
-			if(!document.getElementById("sensorData").innerHTML.includes(sensorName)){
-                            var newSensor = document.createTextNode(sensorName);
-                            newSensor.innerText = sensorName + "";
-                            sensorsData.appendChild(newSensor);
-                        }
-                    }
-
-                    if(data.ID == "noIntrusion"){
-                    	document.getElementById("sensorData").innerText = "Nessuna intrusione rilevata.";
-                    };
-                } catch (e) {
-                    console.error("Errore nel parsing dei dati JSON: ", e);
-                }
-                // indent to here
-                };
-
-                ws.onerror = function(event) {
-                    function retryWSConnection() {
-                        console.log("Riprovando a connettersi al WS...");
-                        setInterval(WSConnection, 5000);
-		    }
-                    while(ws.onerror){retryWSConnection();}
-                    document.getElementById("sensorData").innerText = "Nessuna connessione, riprova.";
-                    console.error("Errore durante la connessione al WS: ", event);
-                    
-                    
-                };
-
-                ws.onclose = function(event) {
-                    console.log("WS connessione terminata: ", event);
-                };
-
-            } catch (e) {
-                console.error("Errore nella connessione al WS: ", e);
-            };
-
-            function allarmButton() {
-                if (document.getElementById("allarmSwitch").checked){
-                    document.getElementById("allarmStatusText").innerText = "ON";
-                } else{
-                    document.getElementById("allarmStatusText").innerText = "OFF";
-                }
-            };
-        </script>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SecHome - PAGINA PERSONALE </title>
         <link rel="stylesheet" href="styles/paginaPersonale.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+        <script type="text/javascript" src="js/main.js"></script>
     </head>
     <body>
 
