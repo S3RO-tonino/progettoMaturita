@@ -1,14 +1,11 @@
-
 function WSConnect() {
-    if(!ws.onopen || ws == ""){
-        var ws = new WebSocket("ws://192.168.1.155:8765/");
-        return ws;
-    }
+    var ws = new WebSocket("ws://192.168.1.155:8765/");
+    return ws;
 };
 
 function retryWSConnection() {
     console.log("Riprovando a connettersi al WS...");
-    setInterval(WSConnect, 7000);
+    WSInterval = setInterval(WSConnect, 7000);
 };
 
 ws = WSConnect();
@@ -42,6 +39,10 @@ ws.onmessage = function(event) {
     catch (e) {
         console.error("Errore nel parsing dei dati JSON: ", e);
     }
+};
+
+ws.onopen = function(event) {
+    clearInterval(myInterval);
 };
 
 ws.onerror = function(event) {
