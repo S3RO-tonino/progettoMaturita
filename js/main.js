@@ -10,7 +10,7 @@ function WSConnect() {
             console.log("Riprovando a connettersi al WS...");
             setInterval(WSConnect(), 7000);
         }
-        while(ws.onerror){retryWSConnection();}
+        retryWSConnection();
     };
 };
 
