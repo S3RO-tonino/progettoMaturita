@@ -17,7 +17,7 @@ ws.onmessage = function(event) {
         console.log(data);
 
         if(data.ID == "start"){
-            document.getElementById("allarmStatusText").innerText = data.status;
+            document.getElementById("allarmStatusText").innerText = data.allarmStatus;
         }
 
         else if(data.ID != "start" && data.ID != "noIntrusion" && data.intrusion == true){
