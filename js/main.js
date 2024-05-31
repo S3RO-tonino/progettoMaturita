@@ -1,6 +1,7 @@
 
 function WSConnect() {
     try{
+        console.log("Provo a connettermi al WS...")
         var ws = new WebSocket("ws://192.168.1.155:8765/");
         return ws;
     }
