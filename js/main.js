@@ -1,18 +1,13 @@
 
 function WSConnect() {
-    try{
-        console.log("Provo a connettermi al WS...")
-        var ws = new WebSocket("ws://192.168.1.155:8765/");
-        return ws;
-    }
-    catch (e) {
-        console.error("Errore nella connessione al WS: ", e);
-        function retryWSConnection() {
-            console.log("Riprovando a connettersi al WS...");
-            setInterval(WSConnect(), 7000);
-        }
-        retryWSConnection();
-    };
+    console.log("Provo a connettermi al WS...")
+    var ws = new WebSocket("ws://192.168.1.155:8765/");
+    return ws;
+};
+
+function retryWSConnection() {
+    console.log("Riprovando a connettersi al WS...");
+    setInterval(WSConnect, 7000);
 };
 
 ws = WSConnect();
@@ -50,7 +45,8 @@ ws.onmessage = function(event) {
 
 ws.onerror = function(event) {
     document.getElementById("sensorData").innerText = "Nessuna connessione, riprova.";
-    console.error("Errore durante la connessione al WS: ", event);
+    //console.error("Errore durante la connessione al WS: ", event);
+    retryWSConnection();
 };
 
 ws.onclose = function(event) {
