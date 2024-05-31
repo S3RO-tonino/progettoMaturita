@@ -33,9 +33,9 @@ ws.onmessage = function(event) {
             }
 
             if(!document.getElementById("sensorData").innerHTML.includes(sensorName)){
-                            var newSensor = document.createTextNode(sensorName);
-                            newSensor.innerText = sensorName + "";
-                            sensorsData.appendChild(newSensor);
+                var newSensor = document.createTextNode(sensorName);
+                newSensor.innerText = sensorName + "";
+                sensorsData.appendChild(newSensor);
             }
         }
         else if(data.ID == "noIntrusion"){
