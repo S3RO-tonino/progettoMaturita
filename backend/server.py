@@ -28,7 +28,7 @@ async def server(websocket, path):
         status = "ON" if bool(readJson()["status"]) else "OFF"
         #print(f"[DEBUG] STATUS: {status}, type: {type(status)}")
         startMessage = {"ID": 'start', "allarmStatus": f'{status}'}
-        #print(f"SENDING: {startMessage}")
+        print(f"SENDING: {startMessage}")
         #print(f"allarm: {allarm}, type: {type(allarm)}")
         await websocket.send(json.dumps(startMessage))
         #await websocket.send(json.dumps({"sensorID": 'clientConnected', "data": 'Nessuna intrusione', "time": f"{datetime.now().strftime('%H:%M:%S')}"}))
@@ -53,7 +53,9 @@ async def server(websocket, path):
                         #print("DEBUG SM")
                     end = timeNow()
                 elif(differenza(end, start)>=5):
-                    await websocket.send(json.dumps({"ID": 'noIntrusion'}))
+                    #await websocket.send(json.dumps({"ID": 'noIntrusion'}))
+                    await websocket.send(json.dumps(datiSU))
+                    await websocket.send(json.dumps(datiSM))
                     #print("DEBUG NO INTRUSIONE")
                 #print(f"[DEBUG] - DIFFERENZA: {differenza(end, start)} - INIZIO FINE: {start} {end} - SU: {datiSU['intrusion']} - SM:{datiSM['intrusion']} - STATUS {status}")
                     #if datiSU['intrusion']==True: toSend.append(datiSU['name'])
