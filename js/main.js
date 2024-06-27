@@ -5,7 +5,7 @@ function WSConnect() {
 
 function retryWSConnection() {
     console.log("Riprovando a connettersi al WS...");
-    WSInterval = setInterval(WSConnect, 7000);
+    WSConnect();
 };
 
 ws = WSConnect();
@@ -15,7 +15,14 @@ ws.onmessage = function(event) {
         console.log(data);
 
         if(data.ID == "start"){
-            document.getElementById("allarmStatusText").innerText = data.allarmStatus;
+            if(data.allarmStatus == "ON"){
+                document.getElementById("allarmStatusText").innerText = data.allarmStatus;
+                document.getElementById("allarmSwitch").check;
+            }
+            else{
+                document.getElementById("allarmStatusText").innerText = data.allarmStatus;
+                document.getElementById("allarmSwitch").uncheck;
+            }
         }
 
         else if(data.ID != "start" && data.ID != "noIntrusion" && data.intrusion == true){
@@ -42,17 +49,18 @@ ws.onmessage = function(event) {
 };
 
 ws.onopen = function(event) {
-    clearInterval(myInterval);
+    console.log("Connessione col WS eseguita.");
 };
 
 ws.onerror = function(event) {
-    document.getElementById("sensorData").innerText = "Nessuna connessione, riprova.";
-    //console.error("Errore durante la connessione al WS: ", event);
+    document.getElementById("sensorData").innerText = "Nessuna connessione.";
+    console.error("Errore durante la connessione al WS: ", event);
     retryWSConnection();
 };
 
 ws.onclose = function(event) {
     console.log("WS connessione terminata: ", event);
+    retryWSConnection
 };
 
 function allarmButton() {

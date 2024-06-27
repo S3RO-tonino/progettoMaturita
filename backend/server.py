@@ -26,7 +26,7 @@ async def server(websocket, path):
             return datetime.now().strftime('%H:%M:%S')
 
         print("Connessione con il client eseguita")
-        status = bool(readJson()["status"])
+        status = "ON" if bool(readJson()["status"]) else "OFF"
         #print(f"[DEBUG] STATUS: {status}, type: {type(status)}")
         startMessage = {"ID": 'start', "allarmStatus": f'{status}'}
         #print(f"SENDING: {startMessage}")
