@@ -19,7 +19,6 @@ async def server(websocket, path):
 
         def differenza(i, f):
             diff = int(f.replace(":",""))-int(i.replace(":",""))
-            #print(f"Differenza: {diff}")
             return diff
 
         def timeNow():
