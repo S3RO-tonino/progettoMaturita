@@ -35,4 +35,5 @@
     if ($result === false) {
         die('Errore nella scrittura del file JSON');
     }
+    echo $data;
 ?>

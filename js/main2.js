@@ -20,11 +20,11 @@ ws.onmessage = function(event){
         console.log(data);
 
         if(data.ID == "start"){
-            if(data.allarmStatus == "ON"){
+            if(data.allarmStatus === "ON"){
                 document.getElementById("allarmStatusText").innerText = data.allarmStatus;
                 document.getElementById("allarmSwitch").checked = true;
             }
-            else if(data.allarmStatus == "OFF"){
+            else if(data.allarmStatus === "OFF"){
                 document.getElementById("allarmStatusText").innerText = data.allarmStatus;
                 document.getElementById("allarmSwitch").checked = false;
             }
@@ -40,8 +40,9 @@ ws.onmessage = function(event){
             }
 
             if(!document.getElementById("sensorData").innerHTML.includes(sensorName)){
-                sensorsData.appendChild(sensorName);
-                sensorsData.appendChild(" ");
+                var newSensor = document.createTextNode(sensorName);
+                newSensor.innerText = sensorName + " ";
+                sensorsData.appendChild(newSensor);
             }
         }
 
@@ -60,10 +61,12 @@ ws.onmessage = function(event){
 };
 
 function allarmButton() {
+    const checkbox = document.getElementById("allarmSwitch");
     if (document.getElementById("allarmSwitch").checked){
         document.getElementById("allarmStatusText").innerText = "ON";
     } else{
         document.getElementById("allarmStatusText").innerText = "OFF";
     }
+    checkbox.checked = !checkbox.checked;
     <script src="/backend/cambiaStato.php"></script>;
 };
