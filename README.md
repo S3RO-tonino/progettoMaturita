@@ -1,5 +1,5 @@
 **Progetto maturità 2023/2024**
 -------------------------------------------
-*Olas Quad*
+***SecHome***
 
-***V1.0***
+Una simulazione di una pagina usata per gestire un allarme.
