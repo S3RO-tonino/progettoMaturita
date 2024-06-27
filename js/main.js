@@ -4,7 +4,8 @@ function WSConnect(){
         console.log("Connessione col server eseguita.");
     }
     ws.onerror = function(event) {
-        document.getElementById("sensorData").innerText = "Nessuna connessione.";
+        document.getElementById("USensor").innerText = "Nessuna connessione.";
+        document.getElementById("MSensor").innerText = "Nessuna connessione.";
         console.error("Errore durante la connessione al WS: ", event);
     };
     ws.onclose = function(event) {
@@ -20,14 +21,8 @@ ws.onmessage = function(event){
         console.log(data);
 
         if(data.ID == "start"){
-            if(data.allarmStatus === "ON"){
-                document.getElementById("allarmStatusText").innerText = data.allarmStatus;
-                document.getElementById("allarmSwitch").checked = true;
-            }
-            else if(data.allarmStatus === "OFF"){
-                document.getElementById("allarmStatusText").innerText = data.allarmStatus;
-                document.getElementById("allarmSwitch").checked = false;
-            }
+            document.getElementById("allarmStatusText").innerText = "ON";
+            document.getElementById("allarmSwitch").checked = true;
         }
 
         if(document.getElementById("allarmStatusText").innerText === "ON"){
@@ -45,7 +40,7 @@ ws.onmessage = function(event){
                 sensorData.style.backgroundColor = "f2f2f2"
             }
         }
-        else{
+        else if(document.getElementById("allarmStatusText").innerText === "OFF"){
             document.getElementById("USensor").innerText = "Allarme disattivato."
             document.getElementById("MSensor").innerText = "Allarme disattivato."
         }
@@ -63,5 +58,5 @@ function allarmButton() {
         document.getElementById("allarmStatusText").innerText = "OFF";
     }
     checkbox.checked = !checkbox.checked;
-    console.log("cambiooooo");
+    console.log("cambiooooo", checkbox.checked);
 };
