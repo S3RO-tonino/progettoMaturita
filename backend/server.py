@@ -5,7 +5,6 @@ from datetime import datetime
 from sensoreUltrasuoni import leggiDati as leggiDatiSU
 from sensoreMagnetico import leggiDati as leggiDatiSM
 
-
 print("Avviando il server...")
 async def server(websocket, path):
     try:
@@ -21,29 +20,33 @@ async def server(websocket, path):
         startMessage = {"ID": 'start'}
         print(f"SENDING: {startMessage}")
         await websocket.send(json.dumps(startMessage))
-        end = timeNow()
-
+        #end = timeNow()
+        datiSUTime = ''
+        datiSMTime = ''
         while True:
             # Legge i dati dei sensori
             datiSU = leggiDatiSU()
             datiSM = leggiDatiSM()
-            start = timeNow()
-            if datiSU['mex'] == '': datiSU['mex'] = timeNow()
-            if datiSM['mex'] == '': datiSM['mex'] = timeNow()
+            #start = timeNow()
+            if datiSUTime == '':
+                datiSUTime = timeNow()
+                datiSMTime = timeNow()
+                await websocket.send(json.dumps(datiSU))
+                await websocket.send(json.dumps(datiSM))
 
             # Invia i dati al client tramite WebSocket
-            if(datiSU['intrusion']==True):
-                datiSU['mex'] = timeNow()
+            if(datiSU['intrusion']==True and differenza(datiSU['mex'], datiSUTime) < 5):
+                datiSUTime = timeNow()
                 await websocket.send(json.dumps(datiSU))
-            if(datiSM['intrusion']==True):
-                datiSM['mex'] = timeNow()
+            elif(datiSM['intrusion']==True and differenza(datiSU['mex'], datiSUTime) < 5):
+                datiSMTime = timeNow()
                 await websocket.send(json.dumps(datiSM))
-            elif(differenza(datiSU['mex'], start)>=5 or differenza(datiSM['mex'], start)>=5):
+            else:
                 await websocket.send(json.dumps(datiSU))
                 await websocket.send(json.dumps(datiSM))
             await asyncio.sleep(1)
-            end = timeNow()
-            print(f"{start}, {end} - {differenza(end, start)} - {datiSU} {datiSM}")
+            #end = timeNow()
+            print(f"{datiSU} {datiSUTime} {differenza(datiSU['mex'], datiSUTime)}")
 
             await asyncio.sleep(1)  # Aggiorna i dati ogni secondo
     except Exception as e: print(f"Errore: {e}")

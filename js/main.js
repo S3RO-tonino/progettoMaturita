@@ -27,22 +27,22 @@ ws.onmessage = function(event){
 
         if(document.getElementById("allarmStatusText").innerText === "ON"){
             if(data.intrusion === true){
-                var sensorName = data.name;
-                var sensorData = document.getElementById(sensorName);
+                var sensorData = document.getElementById(data.name);
+                var sensorDataDiv = document.getElementById(data.name+'DataDiv')
                 sensorData.innerText=("Intrusione rilevata");
-                sensorData.style.backgroundColor = "red";
+                sensorDataDiv.style.backgroundColor = "red";
             }
 
             else if(data.intrusion === false){
-                var sensorName = data.name;
-                var sensorData = document.getElementById(sensorName);
+                var sensorData = document.getElementById(data.name);
+                var sensorDataDiv = document.getElementById(data.name+'DataDiv');
                 sensorData.innerText=("Nessuna intrusione rilevata");
-                sensorData.style.backgroundColor = "f2f2f2"
+                sensorDataDiv.style.backgroundColor = "#f2f2f2";
             }
         }
-        else if(document.getElementById("allarmStatusText").innerText === "OFF"){
-            document.getElementById("USensor").innerText = "Allarme disattivato."
-            document.getElementById("MSensor").innerText = "Allarme disattivato."
+        else{
+            document.getElementById("USensor").innerText = "Allarme disattivato.";
+            document.getElementById("MSensor").innerText = "Allarme disattivato.";
         }
     }
     catch(e){
@@ -56,7 +56,9 @@ function allarmButton() {
         document.getElementById("allarmStatusText").innerText = "ON";
     } else{
         document.getElementById("allarmStatusText").innerText = "OFF";
+        document.getElementById("USensor").innerText = "Allarme disattivato.";
+        document.getElementById("MSensor").innerText = "Allarme disattivato.";
     }
-    checkbox.checked = !checkbox.checked;
-    console.log("cambiooooo", checkbox.checked);
+    //checkbox.checked = !checkbox.checked;
+    //console.log("cambiooooo", checkbox.checked);
 };

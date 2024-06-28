@@ -31,7 +31,7 @@ def leggiDati():
         #riduco la distanza massima di rilevamento a 25cm
         if distance <= 25: isIntrusion = True
         else: isIntrusion = False
-        mex = ""
+        mex = datetime.now().strftime('%H:%M:%S')
     except Exception as e: mex = (f"Errore durante la lettura: {e}")
     data = {"ID": 'USensor', "name": 'USensor', "intrusion": isIntrusion, "mex": f'{mex}'}
     return data

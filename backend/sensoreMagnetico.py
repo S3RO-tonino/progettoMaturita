@@ -10,7 +10,7 @@ def leggiDati():
         data = {}
         if gp.input(17): isIntrusion = True
         else: isIntrusion = False
-        mex = ""
+        mex = datetime.now().strftime('%H:%M:%S')
     except Exception as e: mex=(f"errore: {e}")
 
     data = {"ID": 'MSensor', "name": 'MSensor', "intrusion": isIntrusion, "mex": f'{mex}'}
