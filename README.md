@@ -2,4 +2,4 @@
 -------------------------------------------
 ***SecHome***
 
-Una simulazione di una pagina usata per gestire un allarme.
+Simulazione di una pagina usata per gestire un sistema di home security.
